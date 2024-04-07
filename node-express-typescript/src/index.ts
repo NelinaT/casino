@@ -31,7 +31,7 @@ interface Result {
 	totalWinnings: number;
 }
 
-// set the congigurations as constant parameters
+// set the configurations as constant 
 const defaults: Defaults = {
 	reelsCount: 5,
 	rowsCount: 3,
@@ -94,10 +94,10 @@ const defaults: Defaults = {
 app.get('/slotMachine', (req: Request, res: Response) => {
 	class Slot{
 		// function that generates randomly the positions of each reel
-		positionGenerator(){
+		positionGenerator() {
 			let positions : any = [];
 
-			for (let i=0; i<defaults.reelsCount; i++){
+			for (let i=0; i<defaults.reelsCount; i++) {
 
 				let index = Math.floor(Math.random() * defaults.reels[i].length);
 
@@ -116,7 +116,7 @@ app.get('/slotMachine', (req: Request, res: Response) => {
 		};
 
 		//function that converts the choosen position into the relevant symbols 
-		convertPositionToSymbols(positions: any){
+		convertPositionToSymbols(positions: any) {
 			let symbols : any = []
 
 			for (let i=0; i<positions.length; i++) {
@@ -128,14 +128,14 @@ app.get('/slotMachine', (req: Request, res: Response) => {
 			return symbols
 		};
 
-		// function that counts duplicates
-		getCountOfEachElementinArray(index:number, symbols:any){
+		// function that counts duplications
+		getCountOfEachElementinArray(index:number, symbols:any) {
 			let lineSymbols: LineSymbols = {};
 
-			for(let j=0; j<defaults.lines[index].length; j++){
-				let lineSymbol:number = symbols[j][defaults.lines[index][j]];
+			for(let j=0; j<defaults.lines[index].length; j++) {
+				let lineSymbol:number = symbols[j][defaults.lines[index][j]]; //takes a specipic element for the lines
 
-				if (lineSymbols[lineSymbol]){
+				if (lineSymbols[lineSymbol]) {
 					lineSymbols[lineSymbol]++;
 				} 
 				else {
@@ -145,14 +145,14 @@ app.get('/slotMachine', (req: Request, res: Response) => {
 			return lineSymbols
 		}
 
-		checkWinnings(lineSymbols: LineSymbols, linesPayout: Array<number>){
+		checkWinnings(lineSymbols: LineSymbols, linesPayout: Array<number>) {
 			let keys = Object.keys(lineSymbols);
 			let elementIsAdded = false;
 			let totalWinnings = 0;
 
-			keys.forEach((key) => {
+			keys.forEach(key => {
 				if (lineSymbols[Number(key)] > 2) {
-					linesPayout.push(defaults.symbols[Number(key)][lineSymbols[Number(key)]-1]);
+					linesPayout.push(defaults.symbols[Number(key)][lineSymbols[Number(key)]-1]); // -1 because default.symbols starts form 0 while lineSymbols from 1
 					elementIsAdded = true;
 				}
 			});
@@ -168,7 +168,6 @@ app.get('/slotMachine', (req: Request, res: Response) => {
 		}
           
         spin() {
-		
 			let linesPayout: Array<number> = [];
 			let totalWinnings = 0;
 
@@ -186,6 +185,7 @@ app.get('/slotMachine', (req: Request, res: Response) => {
 				linesPayout:linesPayout,
 				totalWinnings: totalWinnings
 			};
+			
 			console.log(result)
             return result;
         };
